@@ -1,0 +1,133 @@
+lsblk
+	to show all the devices (sda, sdb, etc.) with their details
+
+lsb_release -rc
+	to display release and code name, e.g.	Release:12.04, Codename:precise
+
+uname -r
+	to display the kernel release, e.g. 3.2.0-75-generic-pae
+
+sudo shutdown -r now
+	to shutdown now and reboot
+
+dd if=/dev/cdrom of=file.iso 
+	to create an iso file from a cd/dvd
+	(assuming /dev/cdrom is where the CD is mounted, and 
+	file.iso is the name you want to give the ISO, in the current directory)
+------
+sudo fsck /dev/sda1
+        (or sudo fsck -y /dev/sda1 to automatically fix all issues)
+	to check integrity of filesystem
+------
+To create an image from a drive
+
+sudo dd if=/dev/sdx of=/path/to/new.iso
+
+Alternatively, to create a USB drive from an image
+
+sudo dd if=/path/to/iso of=/dev/sdx
+
+Replace /dev/sdx with your USB drive, e.g. /dev/sdc.
+
+WARNING: It is imperative that you make certain you are using the correct drive. If you don't use the correct drive, you could lose your data. To check your currently mounted drives, use the command lsblk.
+
+Note: Copying large files (1 GB or higher) can take a long time, be patient.
+
+e.g. sudo dd if=/dev/sdg of=~/Downloads/ATO/AUSkey.iso
+----------
+lpstat -p
+	to list out the printer's names
+
+lpq
+	to list the printers queues
+
+lpoptions -p <queue name> -l
+	to list all available options for a specific printer
+
+dmesg | grep tty
+	to list all tty devices
+
+lsusb	to list all usb devices
+
+hostname
+	returns the computer name
+
+ddrescue -v --force /dev/sda /dev/sdc
+	copies disk 'a' (sda - source) to disk 'c' (sdc - target)
+	--force overwrites the existing partition on the target drive
+	install gddrescue (g = gnome) using: 
+		sudo apt-get install gddrescue
+	after enabling the 'Universe' repository (N.B. connected to the internet) and updating using:
+		sudo apt-get update
+---------------
+When errors related to dependencies occur:
+sudo apt-get clean
+sudo apt-get autoclean
+sudo apt-get autoremove [-f]
+
+sudo apt-get update
+sudo apt-get install -f
+sudo apt-get update --fix-missing
+----------------
+updated Aug-2017
+if still having problems, check if running out of inodes 
+(i.e. getting close to 100%):
+	df -i
+check if the boot partition is full of old kernel images:
+	dpkg -l linux-headers-\* linux-image-\* | grep ^ii
+then delete the oldest versions:
+	e.g. sudo dpkg --remove linux-headers-3.8.0-18
+
+----------------
+option -a removed, ie. no longer works >>>> sudo dpkg-reconfigure -phigh -a
+(can take a while, don't stop it)
+su
+http://askubuntu.com/questions/140246/how-do-i-resolve-unmet-dependencies-after-adding-a-ppa
+---------------
+To solve the error:
+	"requires installation of untrusted packages"
+sudo apt-get clean
+cd /var/lib/apt
+sudo mv lists lists.old
+sudo mkdir -p lists/partial
+sudo apt-get clean 
+sudo apt-get update
+---------------
+APPLICATIONS
+
+xpp	X Printing Panel - used to change printer settings (needs to be installed)
+
+find applications shortcuts:
+	sudo nautilus /usr/share/applications/
+
+geary --debug --log-network > geary.log
+----------------
+To mount an iso image:
+	sudo mkdir -p /media/cdrom  
+	sudo mount -o loop ~/Downloads/ubuntu-xyz.iso /media/cdrom
+(If the upgrade dialog is not displayed for any reason, you may also run the following command using Alt+F2:
+	sudo "sh /media/cdrom/cdromupgrade")
+-----------------
+To install Dropbox:
+	sudo apt-get install nautilus-dropbox
+----------------
+To install Lotus Notes
+	sudo apt-get install gdebi
+	sudo gdebi ibm-lotus-notes-8.5.3.i586.deb
+---------------
+To enable USB in virtualbox:
+	install gnome-system-tools (using apt-get) then search for "users" and select "users & groups", click on button "manage groups" and select the user in the group vboxusers. 
+
+--------------
+To reduce overheating:
+To install and use TLP, use the following commands in a terminal:
+
+sudo add-apt-repository ppa:linrunner/tlp
+sudo apt-get update
+sudo apt-get install tlp tlp-rdw
+sudo tlp start
+You don’t need to do anything after installing TLP. It works in background. To install CPUFREQ indicator use the following command:
+
+sudo apt-get install indicator-cpufreq
+Restart your computer and use the Powersave mode in it
+---------------------------
