@@ -1,0 +1,5 @@
+dd if=/dev/cdrom of=file.iso 
+	
+	assuming /dev/cdrom is where the CD is mounted, and 
+	file.iso is the name you want to give the ISO (in the current directory)
+
